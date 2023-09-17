@@ -19,7 +19,7 @@
         android:id="@+id/reset"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginLeft="330dp"
+        android:layout_marginLeft="300dp"
         android:layout_marginTop="200dp"
         android:scaleType="centerCrop"
         android:src="@drawable/baseline_restart_alt_24">

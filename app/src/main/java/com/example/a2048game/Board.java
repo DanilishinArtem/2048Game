@@ -196,25 +196,19 @@ public class Board {
     boolean gameOver(){
         boolean GO = true;
         for(int i = 0; i < n; i++){
-            if(table[0][i] != 0)
-                GO = false;
-        }
-        /*
-        for(int i = 0; i < n; i++){
             for(int j = 0; j < n; j++){
                 if(table[i][j] == 0){
                     GO = false;
                 }
             }
         }
-        for(int i = 0; i < n; i++){
-            for(int j = 0; j < n - 1; j++){
-                if(table[i][j] == table[i][j+1] || table[j][i] == table[j+1][i]){
+        for(int i = 0; i < n; i++) {
+            for (int j = 0; j < n - 1; j++) {
+                if (table[i][j] == table[i][j + 1] || table[j][i] == table[j + 1][i]) {
                     GO = false;
                 }
             }
         }
-         */
         return GO;
     }
     public void generateBlock(){
