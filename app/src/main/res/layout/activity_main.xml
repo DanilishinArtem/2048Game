@@ -2,39 +2,58 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
+    <TextView
+        android:id="@+id/gameOver"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text=""
+        android:textColor="#000000"
+        android:gravity="center_horizontal"
+        android:textSize="100dp">
+    </TextView>
+    <ImageButton
+        android:id="@+id/reset"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginLeft="330dp"
+        android:layout_marginTop="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/baseline_restart_alt_24">
+    </ImageButton>
     <com.example.a2048game.gameView
         android:id="@+id/gv"
         android:layout_width="370dp"
         android:layout_height="370dp"
-        android:layout_centerInParent="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="150dp">
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="100dp">
     </com.example.a2048game.gameView>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="100dp"
         android:weightSum="2">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1.3">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="2048"
-                android:textSize="30dp">
+                android:textSize="50dp">
             </TextView>
         </RelativeLayout>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="0.9">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -43,27 +62,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
+
                     <TextView
                         android:id="@+id/score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:text="Очки: \n "
-                        android:textSize="20dp">
+                        android:textSize="25dp">
                     </TextView>
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1">
+
                     <TextView
                         android:id="@+id/bestScore"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:text="Рекорд: \n "
-                        android:textSize="20dp">
-                    </TextView>
+                        android:textSize="25dp"></TextView>
                 </RelativeLayout>
             </LinearLayout>
         </RelativeLayout>

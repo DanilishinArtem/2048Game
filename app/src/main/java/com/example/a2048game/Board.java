@@ -1,22 +1,24 @@
 package com.example.a2048game;
 
-import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Board {
+    int currentScore, bestScore;
     private Bitmap block_empty, block_2, block_4, block_8, block_16, block_32, block_64, block_128, block_256,
     block_512, block_1024, block_2048;
     private int n;
     private int[][] table;
-    private ArrayList<Block> arrayList = new ArrayList<>();
     private Resources resources;
     public Board(Resources resources, int n) {
+        this.currentScore = 0;
+        this.bestScore = 0;
         this.resources = resources;
         this.n = n;
         table = new int[n][n];
@@ -25,6 +27,7 @@ public class Board {
                 table[i][j] = 0;
             }
         }
+
         block_empty = BitmapFactory.decodeResource(resources, R.drawable.block_empty);
         block_2 = BitmapFactory.decodeResource(resources, R.drawable.block_2);
         block_4 = BitmapFactory.decodeResource(resources, R.drawable.block_4);
@@ -50,9 +53,169 @@ public class Board {
         block_512 = Bitmap.createScaledBitmap(block_512, constants.sizeOfBlock, constants.sizeOfBlock, false);
         block_1024 = Bitmap.createScaledBitmap(block_1024, constants.sizeOfBlock, constants.sizeOfBlock, false);
         block_2048 = Bitmap.createScaledBitmap(block_2048, constants.sizeOfBlock, constants.sizeOfBlock, false);
-    }
-    void updateTable(){
         generateBlock();
+        generateBlock();
+    }
+    void resetBoard(){
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                table[i][j] = 0;
+            }
+        }
+        generateBlock();
+        generateBlock();
+    }
+    void updateTable(int move){
+        int counter = 0;
+        boolean movement = false;
+        int[][] startTable = new int[4][4];
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                startTable[i][j] = table[i][j];
+            }
+        }
+        if(move == 0){
+            // вправо --->
+            for(int i = 0; i < n; i++){
+                for(int j = n - 1; j >= 0; j--){
+                    if(table[i][j] != 0){
+                        table[i][n - 1 - counter] = table[i][j];
+                        if((n - 1 - counter) != j){
+                            movement = true;
+                            table[i][j] = 0;
+                        }
+                        counter++;
+                    }
+                }
+                counter = 0;
+            }
+            for(int i = 0; i < n; i++){
+                for(int j = n - 1; j > 0; j--){
+                    if(table[i][j] == table[i][j-1]){
+                        table[i][j] *= 2;
+                        currentScore += table[i][j];
+                        for(int k = j - 1; k > 0; k--){
+                            table[i][k] = table[i][k-1];
+                        }
+                        table[i][0] = 0;
+                    }
+                }
+            }
+        }else if(move == 1){
+            // влево
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    if(table[i][j] != 0){
+                        table[i][counter] = table[i][j];
+                        if(counter != j){
+                            table[i][j] = 0;
+                        }
+                        counter++;
+                    }
+                }
+                counter = 0;
+            }
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n - 1; j++){
+                    if(table[i][j] == table[i][j+1]){
+                        table[i][j] *= 2;
+                        currentScore += table[i][j];
+                        for(int k = j + 1; k < n - 1; k++){
+                            table[i][k] = table[i][k+1];
+                        }
+                        table[i][n-1] = 0;
+                    }
+                }
+            }
+        }else if(move == 2){
+            // вниз
+            for(int i = 0; i < n; i++){
+                for(int j = n - 1; j >= 0; j--){
+                    if(table[j][i] != 0){
+                        table[n - 1 - counter][i] = table[j][i];
+                        if((n - 1 - counter) != j){
+                            table[j][i] = 0;
+                        }
+                        counter++;
+                    }
+                }
+                counter = 0;
+            }
+            for(int i = 0; i < n; i++){
+                for(int j = n - 1; j > 0; j--){
+                    if(table[j][i] == table[j-1][i]){
+                        table[j][i] *= 2;
+                        currentScore += table[j][i];
+                        for(int k = j - 1; k > 0; k--){
+                            table[k][i] = table[k-1][i];
+                        }
+                        table[0][i] = 0;
+                    }
+                }
+            }
+        }else if(move == 3){
+            // вверх
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    if(table[j][i] != 0){
+                        table[counter][i] = table[j][i];
+                        if(counter != j){
+                            table[j][i] = 0;
+                        }
+                        counter++;
+                    }
+                }
+                counter = 0;
+            }
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n - 1; j++){
+                    if(table[j][i] == table[j+1][i]){
+                        table[j][i] *= 2;
+                        currentScore += table[j][i];
+                        for(int k = j + 1; k < n - 1; k++){
+                            table[k][i] = table[k+1][i];
+                        }
+                        table[n-1][i] = 0;
+                    }
+                }
+            }
+        }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(startTable[i][j] != table[i][j]){
+                    movement = true;
+                }
+            }
+        }
+
+
+        if(movement){
+            generateBlock();
+        }
+    }
+    boolean gameOver(){
+        boolean GO = true;
+        for(int i = 0; i < n; i++){
+            if(table[0][i] != 0)
+                GO = false;
+        }
+        /*
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(table[i][j] == 0){
+                    GO = false;
+                }
+            }
+        }
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n - 1; j++){
+                if(table[i][j] == table[i][j+1] || table[j][i] == table[j+1][i]){
+                    GO = false;
+                }
+            }
+        }
+         */
+        return GO;
     }
     public void generateBlock(){
         Random random = new Random();
@@ -180,13 +343,5 @@ public class Board {
 
     public void setTable(int[][] table) {
         this.table = table;
-    }
-
-    public ArrayList<Block> getArrayList() {
-        return arrayList;
-    }
-
-    public void setArrayList(ArrayList<Block> arrayList) {
-        this.arrayList = arrayList;
     }
 }
